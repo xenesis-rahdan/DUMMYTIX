@@ -590,65 +590,67 @@
     }
   });
 
- function handleSubmit() {
-  const name  = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const totalTickets = qty.presale;
-  const file  = document.getElementById('payment-proof').files[0];
+function handleSubmit() {
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const totalTickets = qty.presale;
+    const file  = document.getElementById('payment-proof').files[0];
 
-  if (!name || !email || !phone) {
-    alert('Mohon isi informasi pembeli.');
-    return;
+    if (!name || !email || !phone) {
+      alert('Mohon isi informasi pembeli.');
+      return;
+    }
+    if (totalTickets === 0) {
+      alert('Mohon pilih minimal 1 tiket untuk dibeli.');
+      return;
+    }
+    if (!file) {
+      alert('Mohon unggah bukti pembayaran.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+
+      const base64 = reader.result.split(',')[1];
+
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmWQmPQkS9heDQuZQ8hN8j1btYEdYcXjWvTNrqRrEe0bzehs7DTK0290NBQ0DLCxZ3/exec";
+
+      const payload = {
+        Nama:           name,
+        Email:          email,
+        Telepon:        phone,
+        JumlahTiket:    totalTickets,
+        TotalHarga:     "Rp " + (totalTickets * 25000).toLocaleString('id-ID'),
+        BuktiBayarData: base64,
+        BuktiBayarNama: file.name,
+        BuktiBayarTipe: file.type
+      };
+
+      const btn = document.querySelector('.submit-btn');
+      btn.textContent = 'Mengirim...';
+      btn.disabled = true;
+
+      fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        mode: "no-cors"
+      })
+      .then(() => {
+        document.getElementById('form-content').style.display = 'none';
+        document.getElementById('success-msg').style.display  = 'block';
+        btn.disabled = false;
+      })
+      .catch(() => {
+        alert('Tidak ada koneksi. Mohon coba lagi.');
+        btn.textContent = 'Kirim →';
+        btn.disabled = false;
+      });
+    };
   }
-  if (totalTickets === 0) {
-    alert('Mohon pilih minimal 1 tiket untuk dibeli.');
-    return;
-  }
-  if (!file) {
-    alert('Mohon unggah bukti pembayaran.');
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function() {
-
-    const base64 = reader.result.split(',')[1];
-
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxiKKteYk7Lc_07BRLrJqL33rkVUZWGPsgymgRTbreIpusMsj5GbWJSs60wUgs4_yTC/exec";
-
-    const data = new FormData();
-    data.append("Nama",           name);
-    data.append("Email",          email);
-    data.append("Telepon",        phone);
-    data.append("JumlahTiket",    totalTickets);
-    data.append("TotalHarga",     "Rp " + (totalTickets * 25000).toLocaleString('id-ID'));
-    data.append("BuktiBayarData", base64);
-    data.append("BuktiBayarNama", file.name);
-    data.append("BuktiBayarTipe", file.type);
-
-    const btn = document.querySelector('.submit-btn');
-    btn.textContent = 'Mengirim...';
-    btn.disabled = true;
-
-    fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      body: data,
-      mode: "no-cors"
-    })
-    .then(() => {
-      document.getElementById('form-content').style.display = 'none';
-      document.getElementById('success-msg').style.display  = 'block';
-      btn.disabled = false;
-    })
-    .catch(() => {
-      alert('Tidak ada koneksi. Mohon coba lagi.');
-      btn.textContent = 'Kirim →';
-      btn.disabled = false;
-    });
-  };
-}
 </script>
  
 </body>
