@@ -616,7 +616,7 @@ function handleSubmit() {
 
       const base64 = reader.result.split(',')[1];
 
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmWQmPQkS9heDQuZQ8hN8j1btYEdYcXjWvTNrqRrEe0bzehs7DTK0290NBQ0DLCxZ3/exec";
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcdO3J_3Fe5nljAn8eS_QY0qXOXD6SZuF8RVG0BwRk4KKkCRYyWLnR_rOzMmRE0IbP/exec";
 
       const payload = {
         Nama:           name,
@@ -633,22 +633,28 @@ function handleSubmit() {
       btn.textContent = 'Mengirim...';
       btn.disabled = true;
 
-      fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        mode: "no-cors"
-      })
-      .then(() => {
-        document.getElementById('form-content').style.display = 'none';
-        document.getElementById('success-msg').style.display  = 'block';
-        btn.disabled = false;
-      })
-      .catch(() => {
-        alert('Tidak ada koneksi. Mohon coba lagi.');
-        btn.textContent = 'Kirim →';
-        btn.disabled = false;
-      });
+fetch(APPS_SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "text/plain" },
+  body: JSON.stringify(payload)
+})
+.then(res => res.json())
+.then(json => {
+  if (json.result === "success") {
+    document.getElementById('form-content').style.display = 'none';
+    document.getElementById('success-msg').style.display  = 'block';
+    btn.disabled = false;
+  } else {
+    alert('Ada kesalahan: ' + (json.message || 'Mohon coba lagi.'));
+    btn.textContent = 'Kirim →';
+    btn.disabled = false;
+  }
+})
+.catch(() => {
+  alert('Tidak ada koneksi. Mohon coba lagi.');
+  btn.textContent = 'Kirim →';
+  btn.disabled = false;
+});
     };
   }
 </script>
