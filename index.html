@@ -447,6 +447,85 @@
 
     .success-msg p { font-size: 14px; color: var(--muted); line-height: 1.6; }
 
+    /* ── Banner Image ── */
+.banner-wrap {
+  width: 100%;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.banner-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Event Info Strip ── */
+.event-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.event-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.event-info-item .ei-emoji {
+  font-size: 15px;
+}
+
+/* ── Social Media Footer ── */
+.social-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--dark-2);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+
+.social-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.social-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
     /* ============================================
        SOLD OUT & COMING SOON PAGES
        ============================================ */
@@ -573,12 +652,30 @@
   <div class="header">
     <div class="event-tag">🎟 Pentas Tunggal 2025 Teater Lingkar FIB UB</div>
     <h1>"Legenda Calon Arang: Kelam Menelan Terang"</h1>
-    <p>Halo, salam budaya! 🎭<br/>Teater Lingkar datang mempersembahkan Pentas Tunggal 2025 dengan naskah berjudul "Legenda Calon Arang: Kelam Menelan Terang".<br/>
-    📅: Minggu, 21 Juni 2026<br/>
-    🎪: Aula Gedung B, FIB UB<br/>
-    ⏰: 18.30 WIB</p>
+    <p>Halo, salam budaya! 🎭<br/>Teater Lingkar datang mempersembahkan Pentas Tunggal 2025 dengan naskah berjudul "Legenda Calon Arang: Kelam Menelan Terang".</p>
   </div>
 
+  <!-- Banner Image -->
+  <div class="banner-wrap">
+    <img src="headertix.png" alt="Banner Pentas Tunggal 2025" />
+  </div>
+
+  <!-- Event Info Strip -->
+  <div class="event-info">
+    <div class="event-info-item">
+      <span class="ei-emoji">📅</span>
+      <span>Minggu, 21 Juni 2026</span>
+    </div>
+    <div class="event-info-item">
+      <span class="ei-emoji">🎪</span>
+      <span>Aula Gedung B, FIB UB</span>
+    </div>
+    <div class="event-info-item">
+      <span class="ei-emoji">⏰</span>
+      <span>18.30 WIB</span>
+    </div>
+  </div>
+  
   <!-- Card -->
   <div class="card">
 
@@ -687,9 +784,6 @@
         <p>Terima kasih atas antusiasme teman-teman semua.<br/>
         Tiket Pentas Tunggal 2025 telah <strong>habis terjual</strong>.</p>
         <p>Pantau terus media sosial kami untuk informasi selanjutnya.</p>
-        <a href="https://instagram.com/teater.lingkar" target="_blank" class="status-link">
-          📸 Instagram Teater Lingkar
-        </a>
       </div>
     </div><!-- /page-soldout -->
 
@@ -724,14 +818,37 @@
     </div>
 
     <p>Pantau terus media sosial kami untuk info lebih lanjut.</p>
-    <a href="https://instagram.com/teater.lingkar" target="_blank" class="status-link">
-      📸 Instagram Teater Lingkar
-    </a>
   </div>
 </div><!-- /page-comingsoon -->
 
   </div><!-- /card -->
 
+  <!-- Social Media Footer -->
+  <div class="social-footer">
+
+    <a href="https://instagram.com/teater.lingkar" target="_blank" class="social-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608.975-.975 2.242-1.246 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.013 8.332 0 8.741 0 12c0 3.259.013 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.987 8.741 24 12 24c3.259 0 3.668-.013 4.948-.072 1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.059-1.28.072-1.689.072-4.948 0-3.259-.013-3.668-.072-4.948-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.013 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+      </svg>
+      Instagram
+    </a>
+
+    <a href="https://tiktok.com/@teaterlingkar" target="_blank" class="social-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+      </svg>
+      TikTok
+    </a>
+
+    <a href="https://youtube.com/@teaterlingkarfibub9507" target="_blank" class="social-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+      </svg>
+      YouTube
+    </a>
+
+  </div><!-- /social-footer -->
+  
 </div><!-- /wrapper -->
 
 <script>
