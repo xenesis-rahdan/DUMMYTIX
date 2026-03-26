@@ -464,27 +464,52 @@
 
 /* ── Event Info Strip ── */
 .event-info {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 32px;
+}
+
+/* Venue spans both columns — full width */
+.event-info-item.full {
+  grid-column: 1 / -1;
 }
 
 .event-info-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: rgba(201,168,76,0.08);
   border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 20px;
-  padding: 7px 16px;
+  border-radius: 10px;
+  padding: 12px 16px;
   font-size: 13px;
   color: var(--text);
 }
 
 .event-info-item .ei-emoji {
-  font-size: 15px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.event-info-item .ei-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.event-info-item .ei-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.event-info-item .ei-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
 }
 
 /* ── Social Media Footer ── */
@@ -652,7 +677,6 @@
   <div class="header">
     <div class="event-tag">🎟 Pentas Tunggal 2025 Teater Lingkar FIB UB</div>
     <h1>"Legenda Calon Arang: Kelam Menelan Terang"</h1>
-    <p>Halo, salam budaya! 🎭<br/>Teater Lingkar datang mempersembahkan Pentas Tunggal 2025 dengan naskah berjudul "Legenda Calon Arang: Kelam Menelan Terang".</p>
   </div>
 
   <!-- Banner Image -->
@@ -660,19 +684,28 @@
     <img src="headertix.png" alt="Banner Pentas Tunggal 2025" />
   </div>
 
-  <!-- Event Info Strip -->
+<!-- Event Info Strip -->
   <div class="event-info">
     <div class="event-info-item">
       <span class="ei-emoji">📅</span>
-      <span>Minggu, 21 Juni 2026</span>
-    </div>
-    <div class="event-info-item">
-      <span class="ei-emoji">🎪</span>
-      <span>Aula Gedung B, FIB UB</span>
+      <div class="ei-text">
+        <span class="ei-label">Tanggal</span>
+        <span class="ei-value">Minggu, 21 Juni 2026</span>
+      </div>
     </div>
     <div class="event-info-item">
       <span class="ei-emoji">⏰</span>
-      <span>18.30 WIB</span>
+      <div class="ei-text">
+        <span class="ei-label">Waktu</span>
+        <span class="ei-value">18.30 WIB</span>
+      </div>
+    </div>
+    <div class="event-info-item full">
+      <span class="ei-emoji">🎪</span>
+      <div class="ei-text">
+        <span class="ei-label">Tempat</span>
+        <span class="ei-value">Aula Gedung B, Fakultas Ilmu Budaya, Universitas Brawijaya</span>
+      </div>
     </div>
   </div>
   
@@ -893,11 +926,11 @@ var countdownInterval = setInterval(function() {
   const prices = { presale: 25000 };
   const qty    = { presale: 0 };
 
-  function changeQty(type, delta) {
-    qty[type] = Math.max(0, qty[type] + delta);
-    document.getElementById('qty-' + type).value = qty[type];
-    updateSummary();
-  }
+function changeQty(type, delta) {
+  qty[type] = Math.max(0, Math.min(5, qty[type] + delta));
+  document.getElementById('qty-' + type).value = qty[type];
+  updateSummary();
+}
 
   function updateSummary() {
     const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
