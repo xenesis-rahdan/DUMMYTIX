@@ -16,7 +16,6 @@
       --dark-3: #4D0000;
       --border: #2E2E2E;
       --text: #E8E2D9;
-      --muted: #E8E2D9;
       --success: #4CAF7D;
       --error: #E05A5A;
     }
@@ -163,7 +162,7 @@
     }
 
     input::placeholder, textarea::placeholder {
-      color: var(--muted);
+      color: var(--text);
       opacity: 0.7;
     }
 
@@ -335,7 +334,7 @@
 
     .upload-zone .up-sub {
       font-size: 11px;
-      color: var(--muted);
+      color: var(--text);
     }
 
     .upload-zone .up-sub span {
@@ -363,7 +362,7 @@
       justify-content: space-between;
       font-size: 13px;
       padding: 5px 0;
-      color: var(--muted);
+      color: var(--text);
     }
 
     .summary-row.total {
@@ -407,7 +406,7 @@
     .form-note {
       text-align: center;
       font-size: 11.5px;
-      color: var(--muted);
+      color: var(--text);
       margin-top: 14px;
       line-height: 1.6;
     }
@@ -439,7 +438,7 @@
       margin-bottom: 10px;
     }
 
-    .success-msg p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .success-msg p { font-size: 14px; color: var(--text); line-height: 1.6; }
 
     /* ── Banner Image ── */
 .banner-wrap {
@@ -593,7 +592,7 @@
 
     .status-page p {
       font-size: 14px;
-      color: var(--muted);
+      color: var(--text);
       line-height: 1.7;
       margin-bottom: 10px;
     }
@@ -629,7 +628,7 @@
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text);
   margin-top: 6px;
   display: block;
   opacity: 0.7;
@@ -666,12 +665,6 @@
 <body>
 
 <div class="wrapper">
-
-  <!-- Header (always visible) -->
-  <div class="header">
-    <div class="event-tag">🎟 Pentas Tunggal 2025 Teater Lingkar FIB UB</div>
-    <h1>"Legenda Calon Arang: Kelam Menelan Terang"</h1>
-  </div>
 
   <!-- Banner Image -->
   <div class="banner-wrap">
@@ -756,7 +749,7 @@
           <div class="summary-row"><span>Presale (×<span id="s-presale">0</span>)</span><span id="sv-presale">Rp 0</span></div>
           <div class="summary-row total"><span>Total</span><span class="val" id="sv-total">Rp 0</span></div>
         </div>
-
+        
         <!-- QRIS Pembayaran -->
         <div class="section-label">QRIS Pembayaran</div>
         <div class="qr-wrapper">
@@ -981,7 +974,7 @@ function changeQty(type, delta) {
 
       const base64 = reader.result.split(',')[1];
 
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8CGNf712gtUMC67LZSItghhjn0icFwlsxSAItU5r6X77FMGAUgcbgn0iAiydhdQHq7A/exec";
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKHtYg7o1BMV-Hy7ajWsihiEd9pDML0mGQj9AzPCSAtBYqz3i744BNtUfB-fHakG0S/exec";
 
       const payload = {
         Nama:           name,
