@@ -283,8 +283,8 @@
     }
 
     .qr-wrapper img {
-      width: 200px;
-      height: 200px;
+      width: 250px;
+      height: 250px;
       border-radius: 8px;
       border: 1px solid var(--border);
     }
@@ -394,6 +394,23 @@
       position: relative;
       overflow: hidden;
     }
+
+    /* ── Spinner ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(77,0,0,0.3);
+  border-top-color: var(--dark);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
 
     .submit-btn:hover {
       background: var(--gold-light);
@@ -731,7 +748,7 @@
 
         <div style="display:flex; flex-direction:column; gap:10px;">
           <div class="ticket-row">
-            <div class="ticket-icon">🥂</div>
+            <div class="ticket-icon">🍿</div>
             <div class="ticket-info">
               <div class="t-name">Presale</div>
               <div class="t-price">Rp 25,000 / tiket</div>
@@ -974,7 +991,7 @@ function changeQty(type, delta) {
 
       const base64 = reader.result.split(',')[1];
 
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKHtYg7o1BMV-Hy7ajWsihiEd9pDML0mGQj9AzPCSAtBYqz3i744BNtUfB-fHakG0S/exec";
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKxXVmZ25ZmSzXRzyIRDd-Lma46y9UXqGubek6dKxXP5K-9r1MlGlzfIwONKVAW8kqig/exec";
 
       const payload = {
         Nama:           name,
@@ -988,7 +1005,7 @@ function changeQty(type, delta) {
       };
 
       const btn = document.querySelector('.submit-btn');
-      btn.textContent = 'Mengirim...';
+      btn.innerHTML = '<span class="spinner"></span>Mengirim...';
       btn.disabled = true;
 
       fetch(APPS_SCRIPT_URL, {
@@ -1004,13 +1021,13 @@ function changeQty(type, delta) {
           btn.disabled = false;
         } else {
           alert('Ada kesalahan: ' + (json.message || 'Mohon coba lagi.'));
-          btn.textContent = 'Kirim →';
+          btn.innerHTML = 'Kirim →';
           btn.disabled = false;
         }
       })
       .catch(() => {
         alert('Tidak ada koneksi. Mohon coba lagi.');
-        btn.textContent = 'Kirim →';
+        btn.innerHTML = 'Kirim →';
         btn.disabled = false;
       });
     };
