@@ -235,6 +235,16 @@
       margin-top: 2px;
     }
 
+    .ticket-remaining {
+      font-size: 11px;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+.ticket-remaining.low  { color: #E05A5A; } /* 5 or fewer — red */
+.ticket-remaining.mid  { color: #E8C97A; } /* 10 or fewer — yellow */
+.ticket-remaining.ok   { color: #4CAF7D; } /* plenty — green */
+
     .qty-control {
       display: flex;
       align-items: center;
@@ -752,6 +762,7 @@
             <div class="ticket-info">
               <div class="t-name">Presale</div>
               <div class="t-price">Rp 25,000 / tiket</div>
+              <div class="ticket-remaining" id="ticket-remaining">Memuat...</div>
             </div>
             <div class="qty-control">
               <button class="qty-btn" onclick="changeQty('presale', -1)">−</button>
@@ -891,50 +902,79 @@
   // Options: "open" / "soldout" / "comingsoon"
   // ================================================
   const STATUS = "open";
-  // ================================================
 
-  // ================================================
-// 👇 CHANGE THIS DATE for each ticket category
-// Format: "Month Day, Year HH:MM:SS"
-// ================================================
-var countDownDate = new Date("May 18, 2026 18:00:00").getTime();
+  // ── Apps Script URL ──
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRe18WE5j9-yHxCEyWg4obC-MCI3oVk4-jZEq__EeqHdu4aYtx9japEHhAb-UWlu-qow/exec";
 
-var countdownInterval = setInterval(function() {
-  var now      = new Date().getTime();
-  var distance = countDownDate - now;
-
-  if (distance < 0) {
-    clearInterval(countdownInterval);
-    document.getElementById('countdown').innerHTML =
-      '<p class="countdown-expired">Penjualan tiket telah dibuka! 🎭</p>';
-    return;
-  }
-
-  var days    = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  document.getElementById('cd-days').textContent    = String(days).padStart(2, '0');
-  document.getElementById('cd-hours').textContent   = String(hours).padStart(2, '0');
-  document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
-  document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
-}, 1000);
-  
   // Show the right page based on STATUS
-  document.getElementById('page-form').style.display        = STATUS === "open"        ? 'block' : 'none';
-  document.getElementById('page-soldout').style.display     = STATUS === "soldout"     ? 'block' : 'none';
-  document.getElementById('page-comingsoon').style.display  = STATUS === "comingsoon"  ? 'block' : 'none';
+  document.getElementById('page-form').style.display       = STATUS === "open"       ? 'block' : 'none';
+  document.getElementById('page-soldout').style.display    = STATUS === "soldout"    ? 'block' : 'none';
+  document.getElementById('page-comingsoon').style.display = STATUS === "comingsoon" ? 'block' : 'none';
+
+  // ── FETCH 1: Check remaining tickets on page load ──
+  fetch(APPS_SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+      const el        = document.getElementById('ticket-remaining');
+      const remaining = data.remaining;
+      if (remaining <= 0) {
+        el.textContent = 'Tiket habis!';
+        el.className   = 'ticket-remaining low';
+        document.querySelector('.submit-btn').disabled = true;
+        document.querySelector('.submit-btn').textContent = 'Tiket Habis';
+      } else if (remaining <= 5) {
+        el.textContent = 'Tersisa ' + remaining + ' tiket!';
+        el.className   = 'ticket-remaining low';
+      } else if (remaining <= 10) {
+        el.textContent = 'Tersisa ' + remaining + ' tiket';
+        el.className   = 'ticket-remaining mid';
+      } else {
+        el.textContent = 'Tersisa ' + remaining + ' tiket';
+        el.className   = 'ticket-remaining ok';
+      }
+    })
+    .catch(() => {
+      const el = document.getElementById('ticket-remaining');
+      if (el) el.style.display = 'none';
+    });
+
+  // ================================================
+  // 👇 CHANGE THIS DATE for each ticket category
+  // Format: "Month Day, Year HH:MM:SS"
+  // ================================================
+  var countDownDate = new Date("May 18, 2026 18:00:00").getTime();
+
+  var countdownInterval = setInterval(function() {
+    var now      = new Date().getTime();
+    var distance = countDownDate - now;
+
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById('countdown').innerHTML =
+        '<p class="countdown-expired">Penjualan tiket telah dibuka! 🎭</p>';
+      return;
+    }
+
+    var days    = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('cd-days').textContent    = String(days).padStart(2, '0');
+    document.getElementById('cd-hours').textContent   = String(hours).padStart(2, '0');
+    document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+  }, 1000);
 
   // ── Ticket logic ──────────────────────────────────
   const prices = { presale: 25000 };
   const qty    = { presale: 0 };
 
-function changeQty(type, delta) {
-  qty[type] = Math.max(0, Math.min(5, qty[type] + delta));
-  document.getElementById('qty-' + type).value = qty[type];
-  updateSummary();
-}
+  function changeQty(type, delta) {
+    qty[type] = Math.max(0, Math.min(5, qty[type] + delta));
+    document.getElementById('qty-' + type).value = qty[type];
+    updateSummary();
+  }
 
   function updateSummary() {
     const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
@@ -991,8 +1031,6 @@ function changeQty(type, delta) {
 
       const base64 = reader.result.split(',')[1];
 
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKxXVmZ25ZmSzXRzyIRDd-Lma46y9UXqGubek6dKxXP5K-9r1MlGlzfIwONKVAW8kqig/exec";
-
       const payload = {
         Nama:           name,
         Email:          email,
@@ -1008,6 +1046,7 @@ function changeQty(type, delta) {
       btn.innerHTML = '<span class="spinner"></span>Mengirim...';
       btn.disabled = true;
 
+      // ── FETCH 2: Submit form data ──────────────────
       fetch(APPS_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
